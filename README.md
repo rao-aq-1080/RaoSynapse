@@ -254,3 +254,16 @@ Enter `alex` or `sam` on the workspace identity screen, or select its demo butto
 This handoff is the **Node.js + SQLite edition** designed to run directly in VS Code or on a Node host. It is not preconfigured as a Cloudflare D1/Durable Objects deployment. A Cloudflare deployment would require adapting the persistence and realtime bindings.
 
 Before a public production launch, add a managed backup strategy, review provider quotas and terms, configure HTTPS and secure cookies, disable demo seeding, and perform a deployment-specific security review.
+
+## 13. Deploy a public preview on Render
+
+The repository includes [`render.yaml`](./render.yaml) for a one-service Render deployment.
+
+1. Open [Render](https://render.com) and sign in with the GitHub account that owns `rao-aq-1080/RaoSynapse`.
+2. Choose **New → Blueprint**.
+3. Select the `RaoSynapse` repository and the `main` branch.
+4. Review the service named `raosynapse` and create the deployment.
+5. When Render asks for `GROQ_API_KEY`, enter a newly created or rotated Groq key. Never paste the key into GitHub.
+6. Wait for the health check at `/api/v1/health` to turn green, then open the generated `.onrender.com` URL.
+
+The free Render service may sleep when idle and its local SQLite filesystem is ephemeral. It is suitable for seeing the product working publicly, but accounts and conversations can be lost after a redeploy or instance replacement. For durable production data, migrate SQLite to a managed PostgreSQL database and add a persistent storage/backup strategy before inviting real users.
